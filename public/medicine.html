@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="us">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Sprout - the DAO</title>
+    <script src="./js/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/bootstrap-grid.min.css">
+    <script src="./js/bootstrap.min.js"></script>
+    <link href="./css/fonts.css" rel="stylesheet">
+    <script src="./js/metamascara.js"></script>
+    <script src="./js/ipfsLib.js"></script>
+    <script src="https://wzrd.in/standalone/buffer"></script>
+</head>
+
+<style>
+    * {
+        font-family: 'Raleway', sans-serif;
+        font-weight: bold;
+        font-size: 25px;
+    }
+    
+    .proposal {
+        -webkit-transition: opacity .25s ease;
+        height: 400px;
+        overflow: hidden;
+        margin-top: 40px;
+    }
+    
+    img:hover {
+        opacity: 0.7;
+    }
+    
+    #title {
+        font-size: 50px;
+        text-align: center;
+        margin-top: 50px;
+    }
+    
+    #add {
+        cursor: pointer;
+    }
+    
+    h1 {
+        font-weight: bold;
+        font-size: 35px;
+    }
+</style>
+
+<body style="background-color:black;color:lightblue">
+    <div id="title">
+        Medicine
+    </div>
+    <input type="file" id="upload" style="display: none;" onchange="upload()">
+    <div class="container text-center">
+        <!--<img src="./img/plus.png" id="add" alt="placeholder">-->
+        <div class="row">
+            <div class="proposal col-4" style="background-color:#119;color:white">
+                <h1>Proposal A</h1>
+                <hr> How can we address the problem?
+            </div>
+            <div class="proposal col-4" style="background-color:#449;color:white">
+                <h1>Proposal B</h1>
+                <hr>Let customers have full right to deide the extact product they want to build
+            </div>
+            <div class="proposal col-4" style="background-color:#88b;color:white">
+                <h1>Proposal C</h1>
+                <hr>Hackathon idea generator
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+    </script>
+</body>
+
+</html>

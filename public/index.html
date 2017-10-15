@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Skeleton</title>
+    <title>Sprout - the DAO</title>
     <script src="./js/jquery.min.js"></script>
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <script src="./js/bootstrap-grid.min.js"></script>
+    <link rel="stylesheet" href="./css/bootstrap-grid.min.css">
+    <script src="./js/bootstrap.min.js"></script>
     <link href="./css/fonts.css" rel="stylesheet">
     <script src="./js/metamascara.js"></script>
     <script src="./js/ipfsLib.js"></script>
@@ -62,13 +62,19 @@
     <input type="file" id="upload" style="display: none;" onchange="upload()">
     <div class="container-fluid" id="projects">
         <img src="./img/plus.png" id="add" alt="placeholder">
-        <img src="./img/hospital.jpg" alt="placeholder">
+        <img src="./img/hospital.jpg" alt="placeholder" id="hospital">
         <img src="./img/government.jpg" alt="placeholder">
         <img src="./img/research.jpg" alt="placeholder">
         <img src="./img/bus.jpg" alt="placeholder">
     </div>
 
     <script src="./js/ipfs.js"></script>
+    <script>
+        $('#hospital').click(function () {
+            console.log('hi');
+            window.location = './medicine.html';
+        });
+    </script>
 </body>
 
 </html>
