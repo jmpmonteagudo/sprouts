@@ -21,6 +21,7 @@
     "body-parser": "^1.18.2",
     "ethjs": "^0.2.8",
     "express": "^4.16.2",
+    "ipfs": "^0.26.0",
     "metamascara": "^2.0.1",
     "nodemon": "^1.12.1"
   }
