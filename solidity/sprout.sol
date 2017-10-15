@@ -59,7 +59,7 @@ contract BasicSprout {
         return balances[_owner];
     }
 
-    function () {
+    function () external payable {
 		balances[msg.sender] = balances[msg.sender].add(msg.value);
 		totalBalance = totalBalance.add(msg.value);
     }
