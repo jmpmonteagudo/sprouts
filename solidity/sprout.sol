@@ -49,7 +49,7 @@ contract BasicSprout {
 	
     uint256 public totalBalance;
     address public maxFundedProposal; // can be used to query as well
-    mapping (address => uint256) balances;
+    mapping (address => uint256) public balances;
     mapping (address => address) votedProposal;
     mapping (address => uint) fundingOfProposal;
 
@@ -83,7 +83,7 @@ contract BasicSprout {
 
     /// @param _owner The address from which the balance will be retrieved
     /// @return The balance
-    function balanceOf(address _owner) internal constant returns (uint256 balance) {
+    function balanceOf(address _owner) public constant returns (uint256 balance) {
         return balances[_owner];
     }
 

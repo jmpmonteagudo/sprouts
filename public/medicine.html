@@ -7,11 +7,15 @@
     <title>Sprout - the DAO</title>
     <script src="./js/jquery.min.js"></script>
     <link rel="stylesheet" href="./css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
     <script src="./js/bootstrap.min.js"></script>
     <link href="./css/fonts.css" rel="stylesheet">
     <script src="./js/metamascara.js"></script>
     <script src="./js/ipfsLib.js"></script>
     <script src="https://wzrd.in/standalone/buffer"></script>
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <script src="./js/web3.min.js"></script>
+    <script src="./js/bootbox.min.js"></script>
 </head>
 
 <style>
@@ -22,14 +26,10 @@
     }
     
     .proposal {
-        -webkit-transition: opacity .25s ease;
-        height: 400px;
+        height: 470px;
         overflow: hidden;
         margin-top: 40px;
-    }
-    
-    img:hover {
-        opacity: 0.7;
+        position: relative;
     }
     
     #title {
@@ -43,8 +43,55 @@
     }
     
     h1 {
+        margin-top: 20px;
         font-weight: bold;
         font-size: 35px;
+    }
+    
+    #p1 {
+        -webkit-transition: background-color .25s ease;
+        background-color: #119;
+        color: white;
+    }
+    
+    #p1:hover {
+        background-color: #1313a8;
+    }
+    
+    #p2 {
+        -webkit-transition: background-color .25s ease;
+        background-color: #449;
+        color: white;
+    }
+    
+    #p2:hover {
+        background-color: #4949a5;
+    }
+    
+    #p3 {
+        -webkit-transition: background-color .25s ease;
+        background-color: #88b;
+        color: white;
+    }
+    
+    #p3:hover {
+        background-color: #9393c1;
+    }
+    
+    .vote {
+        -webkit-transition: opacity .25s ease;
+        color: black;
+        opacity: 0;
+        font-size: 60px;
+        text-align: center;
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+    }
+    
+    .vote:hover {
+        opacity: 1;
+        cursor: pointer;
     }
 </style>
 
@@ -52,27 +99,90 @@
     <div id="title">
         Medicine
     </div>
+
     <input type="file" id="upload" style="display: none;" onchange="upload()">
-    <div class="container text-center">
-        <!--<img src="./img/plus.png" id="add" alt="placeholder">-->
+    <div class="container">
+        <div>
+
+            <div id="balance"></div>
+        </div>
         <div class="row">
-            <div class="proposal col-4" style="background-color:#119;color:white">
+            <div class="proposal col-4" id="p1">
                 <h1>Proposal A</h1>
                 <hr> How can we address the problem?
+                <div class="vote" id="btnPrompt" onclick="vote(1)">VOTE</div>
             </div>
-            <div class="proposal col-4" style="background-color:#449;color:white">
+            <div class="proposal col-4" id="p2">
                 <h1>Proposal B</h1>
                 <hr>Let customers have full right to deide the extact product they want to build
+                <div class="vote">VOTE</div>
             </div>
-            <div class="proposal col-4" style="background-color:#88b;color:white">
+            <div class="proposal col-4" id="p3">
                 <h1>Proposal C</h1>
                 <hr>Hackathon idea generator
+                <div class="vote">VOTE</div>
             </div>
         </div>
     </div>
 
     <script>
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+            console.log(web3.currentProvider);
+        } else {
+            // set the provider you want from Web3.providers
+            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+            console.log('connected to localhost');
+        }
 
+        var accs = web3.eth.accounts;
+        // var voterX = '0x007A0f7cc9039E4797514401900774aAc946c476';
+        // var voterY = '0x0009bE4AcDb755e3225Eb51A2Ab8499bfa6b7217';
+        // var proposalA = '0x00D9f2c3769736a2950E9D31d418C998D6D55063';
+        // var proposalB = '0x006aA29639830814cBB949Cf85FAd1AdD86069C6';
+
+        var proposals = [];
+        // instantiate contract by address
+        var abiArray = [{ "constant": true, "inputs": [], "name": "maxFundedProposal", "outputs": [{ "name": "", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "balances", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_proposal", "type": "address" }], "name": "vote", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "totalBalance", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "finalizeProposal", "outputs": [{ "name": "_proposal", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "payable": true, "stateMutability": "payable", "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "message", "type": "string" }], "name": "Error", "type": "event" }]
+        var MyContract = web3.eth.contract(abiArray);
+        var contractAddress = "0x06Ef9a3d05F8F437D701a9869A0fB7078Fc8C207";
+        var contract = MyContract.at(contractAddress);
+        updateBalance();
+
+        function vote(proposalID) {
+
+            // currently hard code
+            var proposal = '0x332413cc92cdd0a9c64a0ea782319a9fa23a9606';
+            var value = prompt("How many weis would u like to give to the project?", 0);
+            //TBD: from account 
+            console.log(contract);
+            web3.eth.sendTransaction({ to: contractAddress, value: value }, function (err, txHash) {
+                if (!err) {
+                    contract.vote(proposal, function (err, txHash) {
+                        if (!err) console.log(txHash);
+                        else console.log(err);
+                        updateBalance();
+                    });
+                }
+                else console.log(err);
+            });
+        }
+
+        function updateBalance() {
+            if (contract) {
+                console.log(contract);
+
+                var balance = contract.balances(accs[0], function (err, receipt) {
+                    if (!err) {
+                        console.log(receipt.toNumber());
+                        $('#balance').html('My Balance: ' + receipt.toNumber() + ' wei');
+                    } else console.log(err);
+                });
+            } else {
+                $('#balance').html('fetching...')
+            }
+
+        }
     </script>
 </body>
 
