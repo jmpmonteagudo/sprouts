@@ -48,20 +48,56 @@ contract BasicSprout {
 	using SafeMath for uint256;
 	
     uint256 public totalBalance;
+    address public maxFundedProposal; // can be used to query as well
     mapping (address => uint256) balances;
+    mapping (address => address) votedProposal;
+    mapping (address => uint) fundingOfProposal;
 
+    modifier onlyNotVoted(address voter) {
+        if(votedProposal[voter] == address(0)) {
+            _;
+        } else {
+            Error("The voter has voted already!");
+        }
+    }
+
+    modifier hasBalance(address voter){
+        if(balanceOf(voter) != 0) {
+            _;
+        } else {
+            Error("One has to have balances in his account in order to vote!");
+        }
+    } 
 
     function BasicSprout() {}
 	
-    /// @param _owner The address from which the balance will be retrieved
-    /// @return The balance
-    function balanceOf(address _owner) constant returns (uint256 balance) {
-        return balances[_owner];
-    }
-
+    // fallback function for ppl to put funds into our contract 
     function () external payable {
 		balances[msg.sender] = balances[msg.sender].add(msg.value);
 		totalBalance = totalBalance.add(msg.value);
     }
 
+    function finalizeProposal() external constant returns (address _proposal) {
+        _proposal = maxFundedProposal;
+    }
+
+    /// @param _owner The address from which the balance will be retrieved
+    /// @return The balance
+    function balanceOf(address _owner) internal constant returns (uint256 balance) {
+        return balances[_owner];
+    }
+
+    function vote(address _proposal) external onlyNotVoted(msg.sender) hasBalance(msg.sender) {
+        // vote 
+        votedProposal[msg.sender] = _proposal;
+        fundingOfProposal[_proposal] = fundingOfProposal[_proposal].add(balanceOf(msg.sender));
+
+        // find max
+        if(fundingOfProposal[_proposal] > fundingOfProposal[maxFundedProposal]) {
+            maxFundedProposal = _proposal;
+        }
+    }
+
+    event Error(string message);
+    
 }   
