@@ -110,7 +110,7 @@
             <div class="proposal col-4" id="p1">
                 <h1>Proposal A</h1>
                 <hr> How can we address the problem?
-                <div class="vote" id="btnPrompt" onclick="vote(1)">VOTE</div>
+                <div class="vote" id="btnPrompt" onclick="vote(0)">VOTE</div>
             </div>
             <div class="proposal col-4" id="p2">
                 <h1>Proposal B</h1>
@@ -141,7 +141,7 @@
         // var proposalA = '0x00D9f2c3769736a2950E9D31d418C998D6D55063';
         // var proposalB = '0x006aA29639830814cBB949Cf85FAd1AdD86069C6';
 
-        var proposals = [];
+        var proposals = ['0x332413cc92cdd0a9c64a0ea782319a9fa23a9606', '0xd1b8d3780442ac186ef18ca6ab0a96f8967b431a', '0x8091147064d21caa2f1c652de00ac90dd526ad6b'];
         // instantiate contract by address
         var abiArray = [{ "constant": true, "inputs": [], "name": "maxFundedProposal", "outputs": [{ "name": "", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "balances", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_proposal", "type": "address" }], "name": "vote", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "totalBalance", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "finalizeProposal", "outputs": [{ "name": "_proposal", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "payable": true, "stateMutability": "payable", "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "message", "type": "string" }], "name": "Error", "type": "event" }]
         var MyContract = web3.eth.contract(abiArray);
@@ -152,8 +152,9 @@
         function vote(proposalID) {
 
             // currently hard code
-            var proposal = '0x332413cc92cdd0a9c64a0ea782319a9fa23a9606';
+            var proposal = proposals[proposalID];
             var value = prompt("How many weis would u like to give to the project?", 0);
+            if (value == null) return;
             //TBD: from account 
             console.log(contract);
             web3.eth.sendTransaction({ to: contractAddress, value: value }, function (err, txHash) {
