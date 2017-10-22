@@ -18,15 +18,15 @@ var ipfsHost = 'localhost',
     ipfsWebPort = '8080';
 
 var ipfs = window.IpfsApi(ipfsHost, ipfsAPIPort)
-ipfs.swarm.peers(function (err, response) {
-    if (err) {
-        console.error(err);
-    } else {
-        //console.log("IPFS - connected to " + response.Strings.length + " peers");
-        console.log("IPFS - connected to " + response.Strings + " peers");
-        console.log(response);
-    }
-});
+// ipfs.swarm.peers(function (err, response) {
+//     if (err) {
+//         console.error(err);
+//     } else {
+//         //console.log("IPFS - connected to " + response.Strings.length + " peers");
+//         console.log("IPFS - connected to " + response.Strings + " peers");
+//         console.log(response);
+//     }
+// });
 
 // function used in the html
 function addFile(url) {
