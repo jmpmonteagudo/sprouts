@@ -147,6 +147,7 @@
         var MyContract = web3.eth.contract(abiArray);
         var contractAddress = "0x06Ef9a3d05F8F437D701a9869A0fB7078Fc8C207";
         var contract = MyContract.at(contractAddress);
+        var userDeposit; // updated with updateBalance()
         updateBalance();
 
         function vote(proposalID) {
@@ -162,7 +163,6 @@
                     contract.vote(proposal, function (err, txHash) {
                         if (!err) console.log(txHash);
                         else console.log(err);
-                        updateBalance();
                     });
                 }
                 else console.log(err);
@@ -175,15 +175,21 @@
 
                 var balance = contract.balances(accs[0], function (err, receipt) {
                     if (!err) {
+                        if (userDeposit == receipt.toNumber()) return;
                         console.log(receipt.toNumber());
                         $('#balance').html('My Balance: ' + receipt.toNumber() + ' wei');
+                        userDeposit = receipt.toNumber();
                     } else console.log(err);
                 });
             } else {
                 $('#balance').html('fetching...')
             }
-
         }
+
+        // update user's deposit every 5 sec
+        setInterval(function () {
+            updateBalance();
+        }, 5000);
     </script>
 </body>
 
